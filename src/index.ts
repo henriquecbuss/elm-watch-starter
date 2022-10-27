@@ -13,6 +13,14 @@ const run = () => {
         console.warn(data.message);
 
         app.ports.interopToElm.send({ tag: "alerted" });
+
+        break;
+      }
+
+      case "storeCounter": {
+        localStorage.setItem("counter", data.counter.toString());
+
+        break;
       }
     }
   });
