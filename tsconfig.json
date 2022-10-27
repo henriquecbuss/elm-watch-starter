@@ -31,5 +31,6 @@
     "webpack",
     "jest",
     "src/setupTests.ts"
-  ]
+  ],
+  "include": ["src/**/*.ts", "./.eslintrc.cjs"]
 }
