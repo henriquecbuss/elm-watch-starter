@@ -1,8 +1,7 @@
 {
-  "name": "test-elm",
+  "name": "elm-watch-starter",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A template repository using Elm, elm-watch, and some goodies",
   "scripts": {
     "postinstall": "elm-tooling install",
     "build": "elm-watch make --optimize && tsc --noEmit -p ./tsconfig.build.json && npm run build:esbuild --tsconfig=./tsconfig.build.json",
@@ -18,7 +17,7 @@
     "test:elm": "elm-test-rs"
   },
   "keywords": [],
-  "author": "",
+  "author": "henriquecbuss",
   "license": "ISC",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.41.0",
