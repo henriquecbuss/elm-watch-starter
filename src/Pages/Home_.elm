@@ -120,15 +120,11 @@ viewFirstSection shared =
                 []
                 [ Html.text "elm-ts-interop" ]
             , Html.text " and many more goodies! Check out the "
-
-            -- TODO - Replace with real page
-            , Ui.Link.view Gen.Route.NotFound
+            , Ui.Link.view Gen.Route.Tools
                 []
                 [ Html.text "tools page" ]
             , Html.text " to learn more about the tools used in this project, or the "
-            , Ui.Link.viewExternal { href = "#getting-started" }
-                []
-                [ Html.text "Getting started" ]
+            , Ui.Link.viewExternal { href = "#getting-started" } [] [ Html.text "Getting started" ]
             , Html.text " section to learn how to use this template"
             ]
         , Html.p [ class "mt-10" ] [ Html.text "Just to show that the project works, here's the usual sample counter app:" ]
@@ -170,9 +166,7 @@ viewGettingStarted =
         , Ui.Message.view Html.aside
             [ class "mt-4" ]
             [ Html.text "If you want to know more about the tools used here, go look at the "
-
-            -- TODO - Replace with real page
-            , Ui.Link.view Gen.Route.NotFound [] [ Html.text "tools page" ]
+            , Ui.Link.view Gen.Route.Tools [] [ Html.text "tools page" ]
             , Html.text "! This section is more about how to use this template."
             ]
         , Html.p [ class "mt-4" ]

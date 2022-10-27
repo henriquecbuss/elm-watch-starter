@@ -22,6 +22,12 @@ const run = () => {
 
         break;
       }
+      case "scrollTo": {
+        document.querySelector(data.querySelector)?.scrollIntoView({
+          behavior: "smooth",
+        });
+        break;
+      }
     }
   });
 };

@@ -19,6 +19,7 @@ interop =
 type FromElm
     = Alert String
     | StoreCounter Int
+    | ScrollTo { querySelector : String }
 
 
 type ToElm
@@ -33,18 +34,23 @@ type alias Flags =
 fromElm : Encoder FromElm
 fromElm =
     TsEncode.union
-        (\vAlert vStoreCounter value ->
+        (\vAlert vStoreCounter vScrollTo value ->
             case value of
                 Alert string ->
                     vAlert string
 
                 StoreCounter counter ->
                     vStoreCounter counter
+
+                ScrollTo querySelector ->
+                    vScrollTo querySelector
         )
         |> TsEncode.variantTagged "alert"
             (TsEncode.object [ required "message" identity TsEncode.string ])
         |> TsEncode.variantTagged "storeCounter"
             (TsEncode.object [ required "counter" identity TsEncode.int ])
+        |> TsEncode.variantTagged "scrollTo"
+            (TsEncode.object [ required "querySelector" .querySelector TsEncode.string ])
         |> TsEncode.buildUnion
 
 

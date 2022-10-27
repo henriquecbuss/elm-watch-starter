@@ -1,6 +1,7 @@
 module Main exposing (main)
 
 import Browser
+import Browser.Dom
 import Browser.Navigation as Nav exposing (Key)
 import Effect
 import Gen.Model
@@ -95,11 +96,23 @@ update msg model =
                         Pages.init (Route.fromUrl url) model.shared url model.key
                 in
                 ( { model | url = url, page = page }
-                , Effect.toCmd ( Shared, Page ) effect
+                , Cmd.batch
+                    [ Effect.toCmd ( Shared, Page ) effect
+                    , Browser.Dom.setViewport 0 0
+                        |> Task.perform (\_ -> NoOp)
+                    ]
                 )
 
             else
-                ( { model | url = url }, Cmd.none )
+                ( { model | url = url }
+                , case url.fragment of
+                    Nothing ->
+                        Cmd.none
+
+                    Just fragment ->
+                        InteropDefinitions.ScrollTo { querySelector = "#" ++ fragment }
+                            |> InteropPorts.fromElm
+                )
 
         Shared sharedMsg ->
             let
@@ -196,3 +209,6 @@ toElmSubscription page toElm =
         Gen.Model.Home_ _ _ ->
             Pages.Home_.toElmSubscription toElm
                 |> Maybe.map Gen.Msg.Home_
+
+        Gen.Model.Tools _ _ ->
+            Nothing

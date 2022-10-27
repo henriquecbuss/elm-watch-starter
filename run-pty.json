@@ -20,7 +20,13 @@
     "defaultStatus": ["⏳", "W"]
   },
   {
-    "command": ["npx", "live-server", "public", "--port=3000"],
+    "command": [
+      "npx",
+      "live-server",
+      "public",
+      "--port=3000",
+      "--entry-file=index.html"
+    ],
     "title": "serve public"
   },
   {
