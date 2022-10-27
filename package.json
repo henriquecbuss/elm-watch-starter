@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "elm-watch make --optimize",
-    "dev": "elm-watch hot",
+    "build:esbuild": "esbuild src/index.ts --bundle --outdir=public/build --public-path=/build/",
+    "dev": "run-pty % elm-watch hot % npm run build:esbuild -- --watch % serve public",
     "postinstall": "elm-tooling install"
   },
   "keywords": [],
@@ -16,6 +17,7 @@
     "elm-watch": "^1.0.2",
     "esbuild": "^0.15.12",
     "run-pty": "^4.0.2",
+    "serve": "^14.0.1",
     "uglify-js": "^3.17.4"
   }
 }
