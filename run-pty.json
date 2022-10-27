@@ -75,5 +75,21 @@
       "elm-spa generated new files.": ["🟢", "+"]
     },
     "defaultStatus": ["⏳", "W"]
+  },
+  {
+    "command": [
+      "npx",
+      "tailwindcss",
+      "-i",
+      "./src/index.css",
+      "-o",
+      "./public/build/index.css",
+      "--watch"
+    ],
+    "title": "tailwindcss",
+    "status": {
+      "Done in": ["🟢", "+"]
+    },
+    "defaultStatus": ["⏳", "W"]
   }
 ]

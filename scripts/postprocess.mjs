@@ -48,19 +48,24 @@ const pureFuncs = [
   "A9",
 ];
 
-// Source: https://discourse.elm-lang.org/t/what-i-ve-learned-about-minifying-elm-code/7632
+/**
+ * Source: https://discourse.elm-lang.org/t/what-i-ve-learned-about-minifying-elm-code/7632
+ *
+ * @param {string} code
+ * @param {{minimal: boolean}} options
+ * @returns {Promise<string>}
+ */
 async function minify(code, { minimal }) {
   return minimal ? runUglifyJSAndEsbuild(code) : runEsbuild(code);
 }
 
+/**
+ * @param {string} code
+ * @returns {Promise<string>}
+ */
 async function runUglifyJSAndEsbuild(code) {
   const result = UglifyJS.minify(code, {
     compress: {
-      ...Object.fromEntries(
-        Object.entries(UglifyJS.default_options().compress).map(
-          ([key, value]) => [key, value === true ? false : value]
-        )
-      ),
       pure_funcs: pureFuncs,
       pure_getters: true,
       strings: true,
@@ -91,6 +96,10 @@ async function runUglifyJSAndEsbuild(code) {
   ).code;
 }
 
+/**
+ * @param {string} code
+ * @returns {Promise<string>}
+ */
 async function runEsbuild(code) {
   return (
     await esbuild.transform(removeIIFE(code), {
@@ -102,6 +111,10 @@ async function runEsbuild(code) {
   ).code;
 }
 
+/**
+ * @param {string} code
+ * @returns {string}
+ */
 function removeIIFE(code) {
   return `var scope = window;${code.slice(
     code.indexOf("{") + 1,
