@@ -1,6 +1,8 @@
+import { Elm } from "./Main.elm";
+
 const run = () => {
-  window.Elm?.Main?.init({
-    node: document.getElementById("root"),
+  Elm.Main.init({
+    flags: null,
   });
 };
 

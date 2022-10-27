@@ -7,6 +7,7 @@
     "build": "elm-watch make --optimize",
     "build:esbuild": "esbuild src/index.ts --bundle --outdir=public/build --public-path=/build/",
     "dev": "run-pty % elm-watch hot % npm run build:esbuild -- --watch % serve public",
+    "generate:ts-interop": "elm-ts-interop --output src/Main.elm.d.ts",
     "postinstall": "elm-tooling install"
   },
   "keywords": [],
@@ -14,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "elm-tooling": "^1.10.0",
+    "elm-ts-interop": "^0.0.8",
     "elm-watch": "^1.0.2",
     "esbuild": "^0.15.12",
     "run-pty": "^4.0.2",
