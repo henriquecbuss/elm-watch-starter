@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "elm-tooling install",
-    "build": "elm-watch make --optimize && npm run build:esbuild",
+    "build": "elm-watch make --optimize && tsc --noEmit -p ./tsconfig.build.json && npm run build:esbuild --tsconfig=./tsconfig.build.json",
     "build:esbuild": "esbuild src/index.ts --bundle --outdir=public/build --public-path=/build/",
     "dev": "run-pty run-pty.json",
     "generate": "npm run generate:ts-interop",
