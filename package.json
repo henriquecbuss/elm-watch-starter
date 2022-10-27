@@ -8,6 +8,7 @@
     "build": "elm-watch make --optimize && npm run build:esbuild",
     "build:esbuild": "esbuild src/index.ts --bundle --outdir=public/build --public-path=/build/",
     "dev": "run-pty run-pty.json",
+    "generate": "npm run generate:ts-interop",
     "generate:ts-interop": "elm-ts-interop --output generated/Main.d.ts",
     "lint": "npm run lint:elm && npm run lint:ts",
     "lint:ts": "tsc --noEmit && eslint . && prettier --check .",
