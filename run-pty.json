@@ -1,0 +1,31 @@
+[
+  {
+    "command": ["npx", "elm-watch", "hot"],
+    "title": "elm-watch",
+    "status": {
+      "⏳": ["⏳", "W"],
+      "🚨": ["🚨", "E"],
+      "✅": ["🟢", "+"]
+    },
+    "defaultStatus": ["⏳", "W"]
+  },
+  {
+    "command": ["npm", "run", "build:esbuild", "--", "--watch"],
+    "title": "esbuild",
+    "status": {
+      "ERROR": ["🚨", "E"],
+      "200": null
+    }
+  },
+  {
+    "command": ["npx", "serve", "public"],
+    "title": "serve public"
+  },
+  {
+    "command": ["npm", "run", "generate:ts-interop", "--", "--watch"],
+    "title": "elm-ts-interop",
+    "status": {
+      "✅": ["🟢", "+"]
+    }
+  }
+]

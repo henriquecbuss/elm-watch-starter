@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "elm-watch make --optimize",
+    "build": "elm-watch make --optimize && npm run build:esbuild",
     "build:esbuild": "esbuild src/index.ts --bundle --outdir=public/build --public-path=/build/",
-    "dev": "run-pty % elm-watch hot % npm run build:esbuild -- --watch % serve public",
-    "generate:ts-interop": "elm-ts-interop --output src/Main.elm.d.ts",
+    "dev": "run-pty run-pty.json",
+    "generate:ts-interop": "elm-ts-interop --output src/Main.d.ts",
     "postinstall": "elm-tooling install"
   },
   "keywords": [],
