@@ -1,4 +1,4 @@
 elm-stuff
 node_modules
 public/build
-src/Main.d.ts
+generated

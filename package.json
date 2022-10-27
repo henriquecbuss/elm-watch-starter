@@ -8,9 +8,9 @@
     "build": "elm-watch make --optimize && npm run build:esbuild",
     "build:esbuild": "esbuild src/index.ts --bundle --outdir=public/build --public-path=/build/",
     "dev": "run-pty run-pty.json",
-    "generate:ts-interop": "elm-ts-interop --output src/Main.d.ts",
+    "generate:ts-interop": "elm-ts-interop --output generated/Main.d.ts",
     "lint": "npm run lint:elm && npm run lint:ts",
-    "lint:ts": "tsc --noEmit && eslint .",
+    "lint:ts": "tsc --noEmit && eslint . && prettier --check .",
     "lint:elm": "elm-format --validate ./ && elm-review"
   },
   "keywords": [],
@@ -25,6 +25,8 @@
     "elm-watch": "^1.0.2",
     "esbuild": "^0.15.12",
     "eslint": "^8.26.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1",
     "run-pty": "^4.0.2",
     "serve": "^14.0.1",
     "uglify-js": "^3.17.4"
