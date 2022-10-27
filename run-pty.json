@@ -67,5 +67,13 @@
       "Found 0 errors. Watching for file changes.": ["🟢", "+"]
     },
     "defaultStatus": ["⏳", "W"]
+  },
+  {
+    "command": ["npx", "elm-spa", "watch"],
+    "title": "elm-spa",
+    "status": {
+      "elm-spa generated new files.": ["🟢", "+"]
+    },
+    "defaultStatus": ["⏳", "W"]
   }
 ]

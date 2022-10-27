@@ -1,6 +1,10 @@
 const run = () => {
+  const counter = localStorage.getItem("counter");
+
   const app = window.Elm.Main.init({
-    flags: null,
+    flags: {
+      counter: counter ? parseInt(counter) : null,
+    },
   });
 
   app.ports.interopFromElm.subscribe(({ tag, data }) => {

@@ -18,6 +18,7 @@ interop =
 
 type FromElm
     = Alert String
+    | StoreCounter Int
 
 
 type ToElm
@@ -25,19 +26,25 @@ type ToElm
 
 
 type alias Flags =
-    {}
+    { counter : Maybe Int
+    }
 
 
 fromElm : Encoder FromElm
 fromElm =
     TsEncode.union
-        (\vAlert value ->
+        (\vAlert vStoreCounter value ->
             case value of
                 Alert string ->
                     vAlert string
+
+                StoreCounter counter ->
+                    vStoreCounter counter
         )
         |> TsEncode.variantTagged "alert"
             (TsEncode.object [ required "message" identity TsEncode.string ])
+        |> TsEncode.variantTagged "storeCounter"
+            (TsEncode.object [ required "counter" identity TsEncode.int ])
         |> TsEncode.buildUnion
 
 
@@ -52,4 +59,5 @@ toElm =
 
 flags : Decoder Flags
 flags =
-    TsDecode.null {}
+    TsDecode.succeed (\counter -> { counter = counter })
+        |> TsDecode.andMap (TsDecode.optionalNullableField "counter" TsDecode.int)

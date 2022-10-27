@@ -11,7 +11,7 @@
     "generate:ts-interop": "elm-ts-interop --output generated/Main.d.ts",
     "lint": "npm run lint:elm && npm run lint:ts",
     "lint:ts": "tsc --noEmit && eslint . && prettier --check .",
-    "lint:elm": "elm-format --validate ./ && elm-review",
+    "lint:elm": "elm-format --validate ./src ./tests && elm-review",
     "test": "npm run test:elm && npm run test:ts",
     "test:ts": "vitest run",
     "test:elm": "elm-test-rs"
@@ -23,6 +23,7 @@
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "elm-review": "^2.7.6",
+    "elm-spa": "^6.0.4",
     "elm-tooling": "^1.10.0",
     "elm-ts-interop": "^0.0.8",
     "elm-watch": "^1.0.2",

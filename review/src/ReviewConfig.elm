@@ -19,6 +19,7 @@ import NoUnused.Modules
 import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
+import NoFunctionOutsideOfModules
 import Review.Rule exposing (Rule)
 
 
@@ -32,4 +33,8 @@ config =
     , NoUnused.Parameters.rule
     , NoUnused.Patterns.rule
     , NoUnused.Variables.rule
+    , NoFunctionOutsideOfModules.rule [
+        ( [ "InteropPorts.toElm" ], [ "Main" ] )
     ]
+    ]
+        |> List.map (Review.Rule.ignoreErrorsForDirectories [ ".elm-spa" ])
