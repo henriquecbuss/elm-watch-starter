@@ -1,0 +1,21 @@
+{
+  "name": "test-elm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "elm-watch make --optimize",
+    "dev": "elm-watch hot",
+    "postinstall": "elm-tooling install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "elm-tooling": "^1.10.0",
+    "elm-watch": "^1.0.2",
+    "esbuild": "^0.15.12",
+    "run-pty": "^4.0.2",
+    "uglify-js": "^3.17.4"
+  }
+}
