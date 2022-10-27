@@ -81,7 +81,7 @@
       "npx",
       "tailwindcss",
       "-i",
-      "./src/index.css",
+      "./src/css/index.css",
       "-o",
       "./public/build/index.css",
       "--watch"

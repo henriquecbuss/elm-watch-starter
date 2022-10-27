@@ -70,8 +70,7 @@ view : Shared.Model -> Model -> View Msg
 view shared _ =
     { title = "Home"
     , body =
-        [ Html.button [ Html.Events.onClick ClickedDecrement ]
-            [ Html.text "-" ]
+        [ Html.button [ Html.Events.onClick ClickedDecrement ] [ Html.text "-" ]
         , Html.text (String.fromInt shared.counter)
         , Html.button [ Html.Events.onClick ClickedIncrement ] [ Html.text "+" ]
         ]
