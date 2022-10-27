@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "elm-tooling install",
     "build": "elm-watch make --optimize && npm run build:esbuild",
     "build:esbuild": "esbuild src/index.ts --bundle --outdir=public/build --public-path=/build/",
     "dev": "run-pty run-pty.json",
     "generate:ts-interop": "elm-ts-interop --output src/Main.d.ts",
-    "postinstall": "elm-tooling install"
+    "lint": "npm run lint:elm",
+    "lint:elm": "elm-format --validate ./ && elm-review"
   },
   "keywords": [],
   "author": "",
