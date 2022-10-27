@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "elmTooling.elm-ls-vscode",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}
