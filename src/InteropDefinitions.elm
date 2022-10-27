@@ -1,8 +1,7 @@
 module InteropDefinitions exposing (Flags, FromElm(..), ToElm(..), interop)
 
-import Json.Encode
 import TsJson.Decode as TsDecode exposing (Decoder)
-import TsJson.Encode as TsEncode exposing (Encoder, optional, required)
+import TsJson.Encode as TsEncode exposing (Encoder, required)
 
 
 interop :
@@ -22,11 +21,7 @@ type FromElm
 
 
 type ToElm
-    = AuthenticatedUser User
-
-
-type alias User =
-    { username : String }
+    = Alerted
 
 
 type alias Flags =
@@ -49,11 +44,8 @@ fromElm =
 toElm : Decoder ToElm
 toElm =
     TsDecode.discriminatedUnion "tag"
-        [ ( "authenticatedUser"
-          , TsDecode.map AuthenticatedUser
-                (TsDecode.map User
-                    (TsDecode.field "username" TsDecode.string)
-                )
+        [ ( "alerted"
+          , TsDecode.succeed Alerted
           )
         ]
 

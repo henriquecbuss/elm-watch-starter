@@ -1,8 +1,10 @@
-module Tests exposing (..)
+module Tests exposing (suite)
 
-import Test exposing (Test)
+import Expect
+import Test exposing (Test, test)
 
 
 suite : Test
 suite =
-    Test.todo "Implement the first test. See https://package.elm-lang.org/packages/elm-explorations/test/latest for how to do this!"
+    test "should pass" <|
+        \_ -> Expect.pass

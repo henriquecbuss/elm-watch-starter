@@ -32,5 +32,10 @@
     "jest",
     "src/setupTests.ts"
   ],
-  "include": ["src/**/*.ts", "generated/**/*.ts", "./.eslintrc.cjs"]
+  "include": [
+    "src/**/*.ts",
+    "generated/**/*.ts",
+    "./.eslintrc.cjs",
+    "tests/**/*.spec.ts"
+  ]
 }

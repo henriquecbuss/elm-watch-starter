@@ -1,16 +1,19 @@
 module Main exposing (main)
 
 import Browser
-import Html exposing (Html, text)
+import Html
+import InteropDefinitions
+import InteropPorts
+import Json.Decode
 
 
-main : Program Flags Model Msg
+main : Program Json.Decode.Value Model Msg
 main =
     Browser.application
-        { init = \_ _ _ -> init
+        { init = \flags _ _ -> init flags
         , view = view
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         , onUrlChange = \_ -> NoOp
         , onUrlRequest = \_ -> NoOp
         }
@@ -24,13 +27,18 @@ type alias Model =
     {}
 
 
-type alias Flags =
-    ()
+init : Json.Decode.Value -> ( Model, Cmd Msg )
+init jsonFlags =
+    case InteropPorts.decodeFlags jsonFlags of
+        Ok _ ->
+            ( {}, Cmd.none )
 
-
-init : ( Model, Cmd Msg )
-init =
-    ( {}, Cmd.none )
+        Err error ->
+            ( {}
+            , Json.Decode.errorToString error
+                |> InteropDefinitions.Alert
+                |> InteropPorts.fromElm
+            )
 
 
 
@@ -39,6 +47,7 @@ init =
 
 type Msg
     = NoOp
+    | GotToElmPort (Result Json.Decode.Error InteropDefinitions.ToElm)
 
 
 
@@ -51,15 +60,35 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
+        GotToElmPort (Err error) ->
+            ( model
+            , Json.Decode.errorToString error
+                |> InteropDefinitions.Alert
+                |> InteropPorts.fromElm
+            )
+
+        GotToElmPort (Ok InteropDefinitions.Alerted) ->
+            ( model, Cmd.none )
+
 
 
 -- VIEW
 
 
 view : Model -> Browser.Document Msg
-view model =
+view _ =
     { title = "TODO"
     , body =
         [ Html.text "Hello from elm"
         ]
     }
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    InteropPorts.toElm
+        |> Sub.map GotToElmPort

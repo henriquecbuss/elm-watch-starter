@@ -7,6 +7,8 @@ const run = () => {
     switch (tag) {
       case "alert": {
         console.warn(data.message);
+
+        app.ports.interopToElm.send({ tag: "alerted" });
       }
     }
   });

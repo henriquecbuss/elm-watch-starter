@@ -13,7 +13,8 @@
     "lint": "npm run lint:elm && npm run lint:ts",
     "lint:ts": "tsc --noEmit && eslint . && prettier --check .",
     "lint:elm": "elm-format --validate ./ && elm-review",
-    "test": "npm run test:elm",
+    "test": "npm run test:elm && npm run test:ts",
+    "test:ts": "vitest run",
     "test:elm": "elm-test-rs"
   },
   "keywords": [],
@@ -32,6 +33,7 @@
     "prettier": "^2.7.1",
     "run-pty": "^4.0.2",
     "serve": "^14.0.1",
-    "uglify-js": "^3.17.4"
+    "uglify-js": "^3.17.4",
+    "vitest": "^0.24.3"
   }
 }
