@@ -12,7 +12,9 @@
     "generate:ts-interop": "elm-ts-interop --output generated/Main.d.ts",
     "lint": "npm run lint:elm && npm run lint:ts",
     "lint:ts": "tsc --noEmit && eslint . && prettier --check .",
-    "lint:elm": "elm-format --validate ./ && elm-review"
+    "lint:elm": "elm-format --validate ./ && elm-review",
+    "test": "npm run test:elm",
+    "test:elm": "elm-test-rs"
   },
   "keywords": [],
   "author": "",
