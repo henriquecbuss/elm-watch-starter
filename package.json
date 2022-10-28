@@ -10,7 +10,7 @@
     "build:esbuild": "esbuild src/ts/index.ts --bundle --outdir=public/build --public-path=/build/",
     "build:tailwind": "tailwindcss -i ./src/css/index.css -o ./public/build/index.css",
     "dev": "run-pty run-pty.json",
-    "generate": "npm run generate:ts-interop && npm run generate:elm-spa",
+    "generate": "npm run generate:elm-spa && npm run generate:ts-interop",
     "generate:ts-interop": "elm-ts-interop --output generated/Main.d.ts",
     "generate:elm-spa": "elm-spa generate",
     "lint": "npm run lint:elm && npm run lint:ts && npm run lint:css",
