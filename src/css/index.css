@@ -5,5 +5,5 @@
 @tailwind utilities;
 
 body {
-    @apply text-body;
+  @apply text-body;
 }

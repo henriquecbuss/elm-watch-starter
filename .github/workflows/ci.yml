@@ -1,7 +1,6 @@
 name: CI
 
-on:
-  push
+on: push
 
 jobs:
   main:
@@ -59,13 +58,13 @@ jobs:
       # skipping the step doesn’t save much time.
       - name: elm-tooling install
         run: npx elm-tooling install
-      
+
       - name: Generate
         run: npm run generate
-      
+
       - name: Build
         run: npm run build
-      
+
       - name: Lint
         run: npm run lint
 
