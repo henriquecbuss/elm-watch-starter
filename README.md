@@ -1,5 +1,7 @@
 # elm-watch-starter
 
+![CI](https://github.com/henriquecbuss/elm-watch-starter/actions/workflows/ci.yml/badge.svg)
+
 This is a starter project for [Elm](https://elm-lang.org/). It's build with [elm-watch](https://lydell.github.io/elm-watch/), [elm-test](https://github.com/mpizenberg/elm-test-rs), [elm-review](https://package.elm-lang.org/packages/jfmengels/elm-review/latest/), [elm-spa](https://www.elm-spa.dev), [elm-ts-interop](https://elm-ts-interop.com), and many more goodies! Check out the [live demo](https://elm-watch-starter.vercel.app) to learn more.
 
 ## Getting started
