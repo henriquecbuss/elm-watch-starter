@@ -2,11 +2,11 @@ module Ui.Header exposing (view)
 
 import Gen.Route
 import Html
-import Html.Attributes exposing (class)
+import Html.Attributes as Attr exposing (class)
 import Icons
 
 
-view : Html.Html msg
+view : Html.Html msg_
 view =
     Html.header [ class "bg-blue-elm h-16 text-white mb-10" ]
         [ Html.nav
@@ -14,7 +14,7 @@ view =
             ]
             [ Html.a
                 [ class "flex w-max gap-2 items-center h-full pb-1"
-                , Html.Attributes.href (Gen.Route.toHref Gen.Route.Home_)
+                , Attr.href (Gen.Route.toHref Gen.Route.Home_)
                 ]
                 [ Icons.elm
                 , Html.h1 [ class "text-3xl" ] [ Html.text "elm-watch starter" ]

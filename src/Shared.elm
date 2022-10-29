@@ -9,7 +9,7 @@ module Shared exposing
 
 import InteropDefinitions
 import InteropPorts
-import Json.Decode
+import Json.Decode as Decode
 import Request exposing (Request)
 
 
@@ -23,7 +23,7 @@ type Msg
     | Decrement
 
 
-init : Request -> Result Json.Decode.Error InteropDefinitions.Flags -> ( Model, Cmd Msg )
+init : Request -> Result Decode.Error InteropDefinitions.Flags -> ( Model, Cmd Msg )
 init _ flagsResult =
     case flagsResult of
         Ok flags ->
@@ -31,10 +31,20 @@ init _ flagsResult =
 
         Err error ->
             ( { counter = 0 }
-            , Json.Decode.errorToString error
+            , Decode.errorToString error
                 |> InteropDefinitions.Alert
                 |> InteropPorts.fromElm
             )
+
+
+subscriptions : Request -> Model -> Sub Msg
+subscriptions _ _ =
+    Sub.none
+
+
+toElmSubscriptions : InteropDefinitions.ToElm -> Maybe Msg
+toElmSubscriptions toElm =
+    Nothing
 
 
 update : Request -> Msg -> Model -> ( Model, Cmd Msg )
@@ -47,8 +57,7 @@ update _ msg model =
                     model.counter + 1
             in
             ( { model | counter = newCounter }
-            , newCounter
-                |> InteropDefinitions.StoreCounter
+            , InteropDefinitions.StoreCounter newCounter
                 |> InteropPorts.fromElm
             )
 
@@ -59,19 +68,6 @@ update _ msg model =
                     model.counter - 1
             in
             ( { model | counter = newCounter }
-            , newCounter
-                |> InteropDefinitions.StoreCounter
+            , InteropDefinitions.StoreCounter newCounter
                 |> InteropPorts.fromElm
             )
-
-
-subscriptions : Request -> Model -> Sub Msg
-subscriptions _ _ =
-    Sub.none
-
-
-toElmSubscriptions : InteropDefinitions.ToElm -> Maybe Msg
-toElmSubscriptions toElm =
-    case toElm of
-        _ ->
-            Nothing

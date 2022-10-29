@@ -2,7 +2,7 @@ module Ui.Link exposing (view, viewExternal)
 
 import Gen.Route
 import Html
-import Html.Attributes exposing (class)
+import Html.Attributes as Attr exposing (class)
 
 
 {-| A link to an internal page of the app (using the `Gen.Route.Route` type)
@@ -18,12 +18,12 @@ viewExternal : { href : String } -> List (Html.Attribute msg) -> List (Html.Html
 viewExternal { href } attributes children =
     Html.a
         (defaultClass
-            :: Html.Attributes.href href
+            :: Attr.href href
             :: attributes
         )
         children
 
 
-defaultClass : Html.Attribute msg
+defaultClass : Html.Attribute msg_
 defaultClass =
     class "text-blue-elm hover:underline"

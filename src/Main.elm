@@ -1,4 +1,4 @@
-module Main exposing (main)
+module Main exposing (Model, Msg, main)
 
 import Browser
 import Browser.Dom
@@ -10,29 +10,13 @@ import Gen.Pages as Pages
 import Gen.Route as Route
 import InteropDefinitions
 import InteropPorts
-import Json.Decode
+import Json.Decode as Decode
 import Pages.Home_
 import Request
 import Shared
 import Task
 import Url exposing (Url)
 import View
-
-
-main : Program Json.Decode.Value Model Msg
-main =
-    Browser.application
-        { init = init
-        , update = update
-        , view = view
-        , subscriptions = subscriptions
-        , onUrlChange = ChangedUrl
-        , onUrlRequest = ClickedLink
-        }
-
-
-
--- INIT
 
 
 type alias Model =
@@ -43,7 +27,36 @@ type alias Model =
     }
 
 
-init : Json.Decode.Value -> Url -> Key -> ( Model, Cmd Msg )
+
+-- INIT
+
+
+type Msg
+    = NoOp
+    | ChangedUrl Url
+    | ClickedLink Browser.UrlRequest
+    | Shared Shared.Msg
+    | Page Pages.Msg
+    | GotToElmPort (Result Decode.Error InteropDefinitions.ToElm)
+
+
+main : Program Decode.Value Model Msg
+main =
+    Browser.application
+        { init = init
+        , onUrlChange = ChangedUrl
+        , onUrlRequest = ClickedLink
+        , subscriptions = subscriptions
+        , update = update
+        , view = view
+        }
+
+
+
+-- UPDATE
+
+
+init : Decode.Value -> Url -> Key -> ( Model, Cmd Msg )
 init jsonFlags url key =
     let
         ( shared, sharedCmd ) =
@@ -60,34 +73,11 @@ init jsonFlags url key =
     )
 
 
-
--- UPDATE
-
-
-type Msg
-    = NoOp
-    | ChangedUrl Url
-    | ClickedLink Browser.UrlRequest
-    | Shared Shared.Msg
-    | Page Pages.Msg
-    | GotToElmPort (Result Json.Decode.Error InteropDefinitions.ToElm)
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none )
-
-        ClickedLink (Browser.Internal url) ->
-            ( model
-            , Nav.pushUrl model.key (Url.toString url)
-            )
-
-        ClickedLink (Browser.External url) ->
-            ( model
-            , Nav.load url
-            )
 
         ChangedUrl url ->
             if url.path /= model.url.path then
@@ -106,13 +96,23 @@ update msg model =
             else
                 ( { model | url = url }
                 , case url.fragment of
-                    Nothing ->
-                        Cmd.none
-
                     Just fragment ->
                         InteropDefinitions.ScrollTo { querySelector = "#" ++ fragment }
                             |> InteropPorts.fromElm
+
+                    Nothing ->
+                        Cmd.none
                 )
+
+        ClickedLink (Browser.Internal url) ->
+            ( model
+            , Nav.pushUrl model.key (Url.toString url)
+            )
+
+        ClickedLink (Browser.External url) ->
+            ( model
+            , Nav.load url
+            )
 
         Shared sharedMsg ->
             let
@@ -144,13 +144,6 @@ update msg model =
             , Effect.toCmd ( Shared, Page ) effect
             )
 
-        GotToElmPort (Err error) ->
-            ( model
-            , Json.Decode.errorToString error
-                |> InteropDefinitions.Alert
-                |> InteropPorts.fromElm
-            )
-
         GotToElmPort (Ok toElm) ->
             ( model
             , Cmd.batch
@@ -167,9 +160,37 @@ update msg model =
                 ]
             )
 
+        GotToElmPort (Err error) ->
+            ( model
+            , Decode.errorToString error
+                |> InteropDefinitions.Alert
+                |> InteropPorts.fromElm
+            )
+
 
 
 -- VIEW
+
+
+toElmSubscription : Pages.Model -> InteropDefinitions.ToElm -> Maybe Gen.Msg.Msg
+toElmSubscription page toElm =
+    case page of
+        Gen.Model.Redirecting_ ->
+            Nothing
+
+        Gen.Model.Home_ _ _ ->
+            Pages.Home_.toElmSubscription toElm
+                |> Maybe.map Gen.Msg.Home_
+
+        Gen.Model.Tools _ _ ->
+            Nothing
+
+        Gen.Model.NotFound _ ->
+            Nothing
+
+
+
+-- SUBSCRIPTIONS
 
 
 view : Model -> Browser.Document Msg
@@ -180,35 +201,15 @@ view model =
 
 
 
--- SUBSCRIPTIONS
+-- UTILS
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Pages.subscriptions model.page model.shared model.url model.key |> Sub.map Page
-        , Shared.subscriptions (Request.create () model.url model.key) model.shared |> Sub.map Shared
-        , InteropPorts.toElm
-            |> Sub.map GotToElmPort
+        [ Pages.subscriptions model.page model.shared model.url model.key
+            |> Sub.map Page
+        , Shared.subscriptions (Request.create () model.url model.key) model.shared
+            |> Sub.map Shared
+        , Sub.map GotToElmPort InteropPorts.toElm
         ]
-
-
-
--- UTILS
-
-
-toElmSubscription : Pages.Model -> InteropDefinitions.ToElm -> Maybe Gen.Msg.Msg
-toElmSubscription page toElm =
-    case page of
-        Gen.Model.Redirecting_ ->
-            Nothing
-
-        Gen.Model.NotFound _ ->
-            Nothing
-
-        Gen.Model.Home_ _ _ ->
-            Pages.Home_.toElmSubscription toElm
-                |> Maybe.map Gen.Msg.Home_
-
-        Gen.Model.Tools _ _ ->
-            Nothing

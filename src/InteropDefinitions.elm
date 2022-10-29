@@ -4,15 +4,8 @@ import TsJson.Decode as TsDecode exposing (Decoder)
 import TsJson.Encode as TsEncode exposing (Encoder, required)
 
 
-interop :
-    { toElm : Decoder ToElm
-    , fromElm : Encoder FromElm
-    , flags : Decoder Flags
-    }
-interop =
-    { toElm = toElm
-    , fromElm = fromElm
-    , flags = flags
+type alias Flags =
+    { counter : Maybe Int
     }
 
 
@@ -26,8 +19,15 @@ type ToElm
     = Alerted
 
 
-type alias Flags =
-    { counter : Maybe Int
+interop :
+    { flags : Decoder Flags
+    , fromElm : Encoder FromElm
+    , toElm : Decoder ToElm
+    }
+interop =
+    { flags = flags
+    , fromElm = fromElm
+    , toElm = toElm
     }
 
 

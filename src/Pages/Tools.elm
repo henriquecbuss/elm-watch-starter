@@ -21,11 +21,11 @@ page shared _ =
         }
 
 
-view : Shared.Model -> View msg
+view : Shared.Model -> View msg_
 view shared =
     let
-        toolListItem : { name : String, link : String, description : List (Html.Html msg) } -> Html.Html msg
-        toolListItem { name, link, description } =
+        toolListItem : { description : List (Html.Html msg_), link : String, name : String } -> Html.Html msg_
+        toolListItem { description, link, name } =
             Html.li []
                 (Ui.Link.viewExternal { href = link } [] [ Ui.Code.view [] [ Html.text name ] ]
                     :: Html.text ": "
@@ -50,112 +50,112 @@ view shared =
                     [ Html.h3 [ class "mt-4" ] [ Html.text "Here are the tools used in this project:" ]
                     , Html.ul [ class "mt-2 ml-4 list-disc list-inside" ]
                         [ toolListItem
-                            { name = "elm"
+                            { description = [ Html.text "If you're here, I probably don't need to tell you why Elm is great 😉" ]
                             , link = "https://elm-lang.org"
-                            , description = [ Html.text "If you're here, I probably don't need to tell you why Elm is great 😉" ]
+                            , name = "elm"
                             }
                         , toolListItem
-                            { name = "typescript"
+                            { description = [ Html.text "Since Elm can't do everything in the web, we need to use some Javascript. Even though it's not perfect, Typescript can help us (much more than Javascript) build safer apps." ]
                             , link = "https://www.typescriptlang.org"
-                            , description = [ Html.text "Since Elm can't do everything in the web, we need to use some Javascript. Even though it's not perfect, Typescript can help us (much more than Javascript) build safer apps." ]
+                            , name = "typescript"
                             }
                         , toolListItem
-                            { name = "elm-ts-interop"
+                            { description = [ Html.text "If we didn't have this, we'd have problems interfacing Elm and Typescript. It's a great tool, and helps make sure that the types are correct." ]
                             , link = "https://elm-ts-interop.com"
-                            , description = [ Html.text "If we didn't have this, we'd have problems interfacing Elm and Typescript. It's a great tool, and helps make sure that the types are correct." ]
+                            , name = "elm-ts-interop"
                             }
                         , toolListItem
-                            { name = "elm-tooling"
+                            { description = [ Html.text "To help us install other elm tools." ]
                             , link = "https://elm-tooling.github.io/elm-tooling-cli/"
-                            , description = [ Html.text "To help us install other elm tools." ]
+                            , name = "elm-tooling"
                             }
                         , toolListItem
-                            { name = "elm-format"
+                            { description = [ Html.text "To format our Elm code. Almost all of the Elm community uses elm-format, so any code is immediately recognizable." ]
                             , link = "https://github.com/avh4/elm-format"
-                            , description = [ Html.text "To format our Elm code. Almost all of the Elm community uses elm-format, so any code is immediately recognizable." ]
+                            , name = "elm-format"
                             }
                         , toolListItem
-                            { name = "elm-review"
+                            { description = [ Html.text "To keep our code sane. It can help us do so many things, such as enforcing a coding style, or making sure we don't use deprecated functions." ]
                             , link = "https://package.elm-lang.org/packages/jfmengels/elm-review/latest/"
-                            , description = [ Html.text "To keep our code sane. It can help us do so many things, such as enforcing a coding style, or making sure we don't use deprecated functions." ]
+                            , name = "elm-review"
                             }
                         , toolListItem
-                            { name = "elm-spa"
-                            , link = "https://www.elm-spa.dev"
-                            , description =
+                            { description =
                                 [ Html.text "To help us generate new pages. It can be a pain to do this manually (but you should probably build at least one app manually, following "
                                 , Ui.Link.viewExternal { href = "https://github.com/rtfeldman/elm-spa-example" } [] [ Html.text "elm-spa-example" ]
                                 , Html.text ". It's a great way to learn Elm!)"
                                 ]
+                            , link = "https://www.elm-spa.dev"
+                            , name = "elm-spa"
                             }
                         , toolListItem
-                            { name = "elm-test-rs"
+                            { description = [ Html.text "To run our elm tests." ]
                             , link = "https://github.com/mpizenberg/elm-test-rs"
-                            , description = [ Html.text "To run our elm tests." ]
+                            , name = "elm-test-rs"
                             }
                         , toolListItem
-                            { name = "vitest"
+                            { description = [ Html.text "To run our typescript tests, if there are any." ]
                             , link = "https://vitest.dev"
-                            , description = [ Html.text "To run our typescript tests, if there are any." ]
+                            , name = "vitest"
                             }
                         , toolListItem
-                            { name = "eslint"
+                            { description = [ Html.text "Pretty much the same as elm-review, but for typescript." ]
                             , link = "https://eslint.org"
-                            , description = [ Html.text "Pretty much the same as elm-review, but for typescript." ]
+                            , name = "eslint"
                             }
                         , toolListItem
-                            { name = "prettier"
+                            { description = [ Html.text "Pretty much the same as elm-format, but for typescript." ]
                             , link = "https://prettier.io"
-                            , description = [ Html.text "Pretty much the same as elm-format, but for typescript." ]
+                            , name = "prettier"
                             }
                         , toolListItem
-                            { name = "stylelint"
+                            { description = [ Html.text "Pretty much the same as elm-review and elm-format, but for css. We shouldn't need this too much, as we're using tailwindcss" ]
                             , link = "https://stylelint.io"
-                            , description = [ Html.text "Pretty much the same as elm-review and elm-format, but for css. We shouldn't need this too much, as we're using tailwindcss" ]
+                            , name = "stylelint"
                             }
                         , toolListItem
-                            { name = "tailwindcss"
-                            , link = "https://tailwindcss.com"
-                            , description =
+                            { description =
                                 [ Html.text "This helps us create beautiful UIs, very fast. It's a great tool, and I highly recommend it. I suggest reading "
                                 , Ui.Link.viewExternal { href = "https://max.hn/thoughts/using-tailwind-css-in-elm-and-vscode" }
                                     []
                                     [ Html.text "Using Tailwind CSS in Elm and VSCode" ]
                                 , Html.text " if you're using VSCode. You can get tailwind autocompletion, linting and hover previews in Elm!"
                                 ]
+                            , link = "https://tailwindcss.com"
+                            , name = "tailwindcss"
                             }
                         , toolListItem
-                            { name = "run-pty"
+                            { description = [ Html.text "Is a tool to run multiple commands in parallel in the terminal. It's what allows us to keep an eye on tests, linters and build statuses all at the same time." ]
                             , link = "https://github.com/lydell/run-pty"
-                            , description = [ Html.text "Is a tool to run multiple commands in parallel in the terminal. It's what allows us to keep an eye on tests, linters and build statuses all at the same time." ]
+                            , name = "run-pty"
                             }
                         , toolListItem
-                            { name = "elm-watch"
-                            , link = "https://lydell.github.io/elm-watch/"
-                            , description =
+                            { description =
                                 [ Html.text "Is what we're using to build our Elm app. It's almost a clone of "
                                 , Ui.Code.view [] [ Html.text "elm make" ]
                                 , Html.text ", but with a watch option, and the ability to postprocess the generated Elm code (we use this ability to minify the code for production)"
                                 ]
+                            , link = "https://lydell.github.io/elm-watch/"
+                            , name = "elm-watch"
                             }
                         , toolListItem
-                            { name = "esbuild"
+                            { description = [ Html.text "Is what we're using to build the Typescript part of the app." ]
                             , link = "https://esbuild.github.io"
-                            , description = [ Html.text "Is what we're using to build the Typescript part of the app." ]
+                            , name = "esbuild"
                             }
                         , toolListItem
-                            { name = "live-server"
+                            { description = [ Html.text "Is what we're using to serve the app for development." ]
                             , link = "http://tapiov.net/live-server/"
-                            , description = [ Html.text "Is what we're using to serve the app for development." ]
+                            , name = "live-server"
                             }
                         , toolListItem
-                            { name = "GitHub Actions"
-                            , link = "https://github.com/features/actions"
-                            , description =
+                            { description =
                                 [ Html.text "Helps us make sure our code is always correct in github. There's already a config file in "
                                 , Ui.Code.view [] [ Html.text ".github/workflows/ci.yml" ]
                                 , Html.text ", which already runs tests, linters, and builds the code, with some nice caching. You should also customize it to make it yours, such as adding a deploy script."
                                 ]
+                            , link = "https://github.com/features/actions"
+                            , name = "GitHub Actions"
                             }
                         ]
                     ]

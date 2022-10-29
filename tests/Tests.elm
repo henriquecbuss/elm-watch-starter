@@ -7,4 +7,4 @@ import Test exposing (Test, test)
 suite : Test
 suite =
     test "should pass" <|
-        \_ -> Expect.pass
+        \() -> Expect.pass

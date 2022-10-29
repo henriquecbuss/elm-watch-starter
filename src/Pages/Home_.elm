@@ -4,7 +4,7 @@ import Effect exposing (Effect)
 import Gen.Params.Home_ exposing (Params)
 import Gen.Route
 import Html
-import Html.Attributes exposing (class)
+import Html.Attributes as Attr exposing (class)
 import Html.Events
 import InteropDefinitions
 import Page
@@ -15,6 +15,19 @@ import Ui.Header
 import Ui.Link
 import Ui.Message
 import View exposing (View)
+
+
+type alias Model =
+    {}
+
+
+
+-- INIT
+
+
+type Msg
+    = ClickedDecrement
+    | ClickedIncrement
 
 
 page : Shared.Model -> Request.With Params -> Page.With Model Msg
@@ -28,25 +41,12 @@ page shared _ =
 
 
 
--- INIT
-
-
-type alias Model =
-    {}
+-- UPDATE
 
 
 init : ( Model, Effect Msg )
 init =
     ( {}, Effect.none )
-
-
-
--- UPDATE
-
-
-type Msg
-    = ClickedDecrement
-    | ClickedIncrement
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -146,11 +146,11 @@ viewFirstSection shared =
         ]
 
 
-viewGettingStarted : Html.Html msg
+viewGettingStarted : Html.Html msg_
 viewGettingStarted =
     let
-        scriptListItem : { name : String, description : List (Html.Html msg) } -> Html.Html msg
-        scriptListItem { name, description } =
+        scriptListItem : { description : List (Html.Html msg_), name : String } -> Html.Html msg_
+        scriptListItem { description, name } =
             Html.li []
                 (Ui.Code.view [] [ Html.text name ]
                     :: Html.text ": "
@@ -159,7 +159,7 @@ viewGettingStarted =
     in
     Html.article [ class "mt-20" ]
         [ Html.h2
-            [ Html.Attributes.id "getting-started"
+            [ Attr.id "getting-started"
             , class "text-xl font-bold"
             ]
             [ Html.text "Getting started 🏃" ]
@@ -187,16 +187,15 @@ viewGettingStarted =
             , Html.text " in their name. That's just a \"subcommand\" of another command, arranged this way to make the scripts more readable. Here's what the main scripts do:"
             , Html.ul [ class "list-disc list-inside mt-2 ml-4" ]
                 [ scriptListItem
-                    { name = "build"
-                    , description =
+                    { description =
                         [ Html.text "Builds all of the Elm files, checks typescript types, bundles everything together, and generates CSS with tailwindcss. Use this command when publishing your app! By default, compiled files are under "
                         , Ui.Code.view [] [ Html.text "public/dist/" ]
                         , Html.text ", so that's what you want to deploy."
                         ]
+                    , name = "build"
                     }
                 , scriptListItem
-                    { name = "dev"
-                    , description =
+                    { description =
                         [ Html.text "Uses "
                         , Ui.Code.view [] [ Html.text "run-pty" ]
                         , Html.text " to start a development server that will automatically listen to file changes. It will automatically rebuild Elm, typescript and tailwind, and apply hot module refreshes on your browser. It automatically generates code for "
@@ -207,10 +206,10 @@ viewGettingStarted =
                         , Ui.Code.view [] [ Html.text "elm-review" ]
                         , Html.text " and typescript and Elm tests in watch mode. Basically, this is all you need when developing."
                         ]
+                    , name = "dev"
                     }
                 , scriptListItem
-                    { name = "generate"
-                    , description =
+                    { description =
                         [ Html.text "Code generation is awesome! This command runs all of the code generation scripts. For now, it only generates code for "
                         , Ui.Code.view [] [ Html.text "elm-ts-interop" ]
                         , Html.text " and "
@@ -221,10 +220,10 @@ viewGettingStarted =
                         , Ui.Link.viewExternal { href = "https://package.elm-lang.org/packages/mdgriffith/elm-codegen/latest/" } [] [ Html.text "mdgriffith/elm-codegen" ]
                         , Html.text "."
                         ]
+                    , name = "generate"
                     }
                 , scriptListItem
-                    { name = "lint"
-                    , description =
+                    { description =
                         [ Html.text "Ensures your code looks good by running "
                         , Ui.Code.view [] [ Html.text "elm-format" ]
                         , Html.text ", "
@@ -237,12 +236,13 @@ viewGettingStarted =
                         , Ui.Code.view [] [ Html.text "stylelint" ]
                         , Html.text ". It also typechecks your typescript code."
                         ]
+                    , name = "lint"
                     }
                 , scriptListItem
-                    { name = "test"
-                    , description =
+                    { description =
                         [ Html.text "Runs all of your tests (make sure you write them!)."
                         ]
+                    , name = "test"
                     }
                 ]
             ]
@@ -293,6 +293,4 @@ viewGettingStarted =
 
 toElmSubscription : InteropDefinitions.ToElm -> Maybe Msg
 toElmSubscription toElm =
-    case toElm of
-        _ ->
-            Nothing
+    Nothing
