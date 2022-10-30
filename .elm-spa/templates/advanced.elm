@@ -1,4 +1,15 @@
-module Pages.{{module}} exposing (Model, Msg, page, toElmSubscription)
+module Pages.{{module}} exposing
+    ( Model, Msg, page
+    , toElmSubscription
+    )
+
+{-| {{module}}
+
+@docs Model, Msg, page
+
+@docs toElmSubscription
+
+-}
 
 import Effect exposing (Effect)
 import Gen.Params.{{module}} exposing (Params)
@@ -10,22 +21,33 @@ import Page
 import InteropDefinitions
 
 
+
+{-| The model for this page
+-}
+type alias Model =
+    {}
+
+
+{-| Everything this page can do
+-}
+type Msg
+    = ReplaceMe
+
+
+{-| This is how elm-spa knows what to do with our app
+-}
 page : Shared.Model -> Request.With Params -> Page.With Model Msg
 page shared req =
     Page.advanced
         { init = init
         , update = update
         , view = view
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> Sub.none
         }
 
 
 
 -- INIT
-
-
-type alias Model =
-    {}
 
 
 init : ( Model, Effect Msg )
@@ -37,24 +59,11 @@ init =
 -- UPDATE
 
 
-type Msg
-    = ReplaceMe
-
-
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
         ReplaceMe ->
             ( model, Effect.none )
-
-
-
--- SUBSCRIPTIONS
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
 
 
 
@@ -69,6 +78,9 @@ view model =
 
 -- PORT SUBSCRIPTION
 
+
+{-| Subscribe to messages from Typescript
+-}
 toElmSubscription : InteropDefinitions.ToElm -> Maybe Msg
 toElmSubscription toElm =
     case toElm of
