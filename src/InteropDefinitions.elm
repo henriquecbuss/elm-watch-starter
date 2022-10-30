@@ -1,24 +1,44 @@
-module InteropDefinitions exposing (Flags, FromElm(..), ToElm(..), interop)
+module InteropDefinitions exposing
+    ( Flags, FromElm(..), ToElm(..)
+    , interop
+    )
+
+{-| This is where we define the messages that can be exchanged between Elm and
+Typescript
+
+@docs Flags, FromElm, ToElm
+
+@docs interop
+
+-}
 
 import TsJson.Decode as TsDecode exposing (Decoder)
 import TsJson.Encode as TsEncode exposing (Encoder, required)
 
 
+{-| The initial flags that we receive from Typescript
+-}
 type alias Flags =
     { counter : Maybe Int
     }
 
 
+{-| Messages that we can send from Elm to Typescript
+-}
 type FromElm
     = Alert String
     | StoreCounter Int
     | ScrollTo { querySelector : String }
 
 
+{-| Messages that we can send from Typescript to Elm
+-}
 type ToElm
     = Alerted
 
 
+{-| This is what elm-ts-interop uses to figure out what to do with our app
+-}
 interop :
     { flags : Decoder Flags
     , fromElm : Encoder FromElm

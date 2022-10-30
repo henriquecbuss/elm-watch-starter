@@ -15,15 +15,18 @@ import TsJson.Decode as TsDecode
 import TsJson.Encode as TsEncode
 
 
-{-| -}
+{-| Send a message from Elm to Typescript
+-}
 fromElm : InteropDefinitions.FromElm -> Cmd msg_
 fromElm value =
-    TsEncode.encoder InteropDefinitions.interop.fromElm
-        value
+    TsEncode.encoder InteropDefinitions.interop.fromElm value
         |> interopFromElm
 
 
-{-| -}
+{-| Receive a message from Typescript to Elm. This should only be used in Main.
+Other modules should have a `toElmSubscription : InteropDefinitions.ToElm -> Maybe Msg`,
+which needs to be wired up in Main
+-}
 toElm : Sub (Result Decode.Error InteropDefinitions.ToElm)
 toElm =
     TsDecode.decoder InteropDefinitions.interop.toElm
@@ -31,7 +34,8 @@ toElm =
         |> interopToElm
 
 
-{-| -}
+{-| Decode the flags received from Typescript
+-}
 decodeFlags : Decode.Value -> Result Decode.Error InteropDefinitions.Flags
 decodeFlags flags =
     Decode.decodeValue

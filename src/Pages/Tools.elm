@@ -1,5 +1,11 @@
 module Pages.Tools exposing (page)
 
+{-| Tools
+
+@docs page
+
+-}
+
 import Gen.Params.Tools exposing (Params)
 import Gen.Route
 import Html
@@ -14,6 +20,8 @@ import Ui.Message
 import View exposing (View)
 
 
+{-| This is how elm-spa knows what to do with our app
+-}
 page : Shared.Model -> Request.With Params -> Page
 page shared _ =
     Page.static

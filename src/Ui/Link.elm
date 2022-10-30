@@ -1,5 +1,11 @@
 module Ui.Link exposing (view, viewExternal)
 
+{-| Link to other pages of the app or of the web
+
+@docs view, viewExternal
+
+-}
+
 import Gen.Route
 import Html
 import Html.Attributes as Attr exposing (class)

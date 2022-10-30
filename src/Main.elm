@@ -1,4 +1,10 @@
-module Main exposing (Model, Msg, main)
+module Main exposing (Model, ModelWithFlags, Msg, main)
+
+{-| The main module of our app
+
+@docs Model, ModelWithFlags, Msg, main
+
+-}
 
 import Browser
 import Browser.Dom
@@ -8,6 +14,7 @@ import Gen.Model
 import Gen.Msg
 import Gen.Pages as Pages
 import Gen.Route as Route
+import Html
 import InteropDefinitions
 import InteropPorts
 import Json.Decode as Decode
@@ -19,6 +26,8 @@ import Url exposing (Url)
 import View
 
 
+{-| The main model of our app
+-}
 type alias Model =
     { url : Url
     , key : Key
@@ -27,10 +36,15 @@ type alias Model =
     }
 
 
+{-| This is the Model that represents the case where we couldn't decode the flags
+-}
+type ModelWithFlags
+    = WithValidFlags Model
+    | WithInvalidFlags Decode.Error
 
--- INIT
 
-
+{-| Everything our app can do
+-}
 type Msg
     = NoOp
     | ChangedUrl Url
@@ -40,27 +54,64 @@ type Msg
     | GotToElmPort (Result Decode.Error InteropDefinitions.ToElm)
 
 
-main : Program Decode.Value Model Msg
+{-| This is what tells Elm what to do with our app
+-}
+main : Program Decode.Value ModelWithFlags Msg
 main =
     Browser.application
-        { init = init
+        { init =
+            \jsonFlags url key ->
+                case InteropPorts.decodeFlags jsonFlags of
+                    Ok flags ->
+                        init flags url key
+                            |> Tuple.mapFirst WithValidFlags
+
+                    Err err ->
+                        ( WithInvalidFlags err
+                        , Decode.errorToString err
+                            |> InteropDefinitions.Alert
+                            |> InteropPorts.fromElm
+                        )
         , onUrlChange = ChangedUrl
         , onUrlRequest = ClickedLink
-        , subscriptions = subscriptions
-        , update = update
-        , view = view
+        , subscriptions =
+            \model ->
+                case model of
+                    WithValidFlags validModel ->
+                        subscriptions validModel
+
+                    WithInvalidFlags _ ->
+                        Sub.none
+        , update =
+            \msg model ->
+                case model of
+                    WithValidFlags validModel ->
+                        update msg validModel
+                            |> Tuple.mapFirst WithValidFlags
+
+                    WithInvalidFlags err ->
+                        ( WithInvalidFlags err, Cmd.none )
+        , view =
+            \model ->
+                case model of
+                    WithValidFlags validModel ->
+                        view validModel
+
+                    WithInvalidFlags err ->
+                        { title = ""
+                        , body =
+                            [ Html.p [] [ Html.text "Invalid flags:" ]
+                            , Html.p [] [ Html.text (Decode.errorToString err) ]
+                            ]
+                        }
         }
 
 
-
--- UPDATE
-
-
-init : Decode.Value -> Url -> Key -> ( Model, Cmd Msg )
-init jsonFlags url key =
+init : InteropDefinitions.Flags -> Url -> Key -> ( Model, Cmd Msg )
+init flags url key =
     let
         ( shared, sharedCmd ) =
-            Shared.init (Request.create () url key) (InteropPorts.decodeFlags jsonFlags)
+            Shared.init (Request.create () url key) flags
 
         ( page, effect ) =
             Pages.init (Route.fromUrl url) shared url key
@@ -209,7 +260,9 @@ subscriptions model =
     Sub.batch
         [ Pages.subscriptions model.page model.shared model.url model.key
             |> Sub.map Page
-        , Shared.subscriptions (Request.create () model.url model.key) model.shared
-            |> Sub.map Shared
+
+        -- This example doesn't use shared subscriptions, but this is how you would add them
+        -- , Shared.subscriptions (Request.create () model.url model.key) model.shared
+        --     |> Sub.map Shared
         , Sub.map GotToElmPort InteropPorts.toElm
         ]

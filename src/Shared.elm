@@ -1,52 +1,67 @@
 module Shared exposing
     ( Model
-    , Msg(..)
-    , init
-    , subscriptions
+    , Msg, increment, decrement
+    , init, update
     , toElmSubscriptions
-    , update
     )
+
+{-| The shared module. This is where all the logic that's shared between pages
+should live.
+
+@docs Model
+
+@docs Msg, increment, decrement
+
+@docs init, update
+
+@docs toElmSubscriptions
+
+-}
 
 import InteropDefinitions
 import InteropPorts
-import Json.Decode as Decode
 import Request exposing (Request)
 
 
+{-| The shared model. Pages have access to this.
+-}
 type alias Model =
     { counter : Int
     }
 
 
+{-| Everything the Shared module can do. Other pages have read access to this.
+You should expose functions to construct Msgs if you want to use them in other
+modules.
+-}
 type Msg
     = Increment
     | Decrement
 
 
-init : Request -> Result Decode.Error InteropDefinitions.Flags -> ( Model, Cmd Msg )
-init _ flagsResult =
-    case flagsResult of
-        Ok flags ->
-            ( { counter = Maybe.withDefault 0 flags.counter }, Cmd.none )
-
-        Err error ->
-            ( { counter = 0 }
-            , Decode.errorToString error
-                |> InteropDefinitions.Alert
-                |> InteropPorts.fromElm
-            )
+{-| Increment the counter
+-}
+increment : Msg
+increment =
+    Increment
 
 
-subscriptions : Request -> Model -> Sub Msg
-subscriptions _ _ =
-    Sub.none
+{-| Decrement the counter
+-}
+decrement : Msg
+decrement =
+    Decrement
 
 
-toElmSubscriptions : InteropDefinitions.ToElm -> Maybe Msg
-toElmSubscriptions toElm =
-    Nothing
+{-| Initialize the shared module
+-}
+init : Request -> InteropDefinitions.Flags -> ( Model, Cmd Msg )
+init _ flags =
+    ( { counter = Maybe.withDefault 0 flags.counter }, Cmd.none )
 
 
+{-| Update the shared module
+-}
 update : Request -> Msg -> Model -> ( Model, Cmd Msg )
 update _ msg model =
     case msg of
@@ -71,3 +86,10 @@ update _ msg model =
             , InteropDefinitions.StoreCounter newCounter
                 |> InteropPorts.fromElm
             )
+
+
+{-| Receive values from Typescript
+-}
+toElmSubscriptions : InteropDefinitions.ToElm -> Maybe Msg
+toElmSubscriptions _ =
+    Nothing

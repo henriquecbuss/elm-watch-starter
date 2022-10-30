@@ -1,11 +1,19 @@
 module Ui.Header exposing (view)
 
+{-| The header that shows up in all pages
+
+@docs view
+
+-}
+
 import Gen.Route
 import Html
 import Html.Attributes as Attr exposing (class)
 import Icons
 
 
+{-| View the header
+-}
 view : Html.Html msg_
 view =
     Html.header [ class "bg-blue-elm h-16 text-white mb-10" ]

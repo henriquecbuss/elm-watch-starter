@@ -1,4 +1,15 @@
-module Pages.Home_ exposing (Model, Msg, page, toElmSubscription)
+module Pages.Home_ exposing
+    ( Model, Msg, page
+    , toElmSubscription
+    )
+
+{-| Home\_
+
+@docs Model, Msg, page
+
+@docs toElmSubscription
+
+-}
 
 import Effect exposing (Effect)
 import Gen.Params.Home_ exposing (Params)
@@ -17,31 +28,33 @@ import Ui.Message
 import View exposing (View)
 
 
+{-| The model for this page
+-}
 type alias Model =
     {}
 
 
-
--- INIT
-
-
+{-| Everything this page can do
+-}
 type Msg
     = ClickedDecrement
     | ClickedIncrement
 
 
+{-| This is how elm-spa knows what to do with our app
+-}
 page : Shared.Model -> Request.With Params -> Page.With Model Msg
 page shared _ =
     Page.advanced
         { init = init
         , update = update
         , view = view shared
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> Sub.none
         }
 
 
 
--- UPDATE
+-- INIT
 
 
 init : ( Model, Effect Msg )
@@ -49,23 +62,18 @@ init =
     ( {}, Effect.none )
 
 
+
+-- UPDATE
+
+
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
         ClickedDecrement ->
-            ( model, Effect.fromShared Shared.Decrement )
+            ( model, Effect.fromShared Shared.decrement )
 
         ClickedIncrement ->
-            ( model, Effect.fromShared Shared.Increment )
-
-
-
--- SUBSCRIPTIONS
-
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
+            ( model, Effect.fromShared Shared.increment )
 
 
 
@@ -291,6 +299,8 @@ viewGettingStarted =
 -- PORT SUBSCRIPTION
 
 
+{-| Subscribe to messages from Typescript
+-}
 toElmSubscription : InteropDefinitions.ToElm -> Maybe Msg
-toElmSubscription toElm =
+toElmSubscription _ =
     Nothing

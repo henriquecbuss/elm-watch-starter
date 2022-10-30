@@ -1,10 +1,18 @@
 module Icons exposing (elm)
 
+{-| All of the icons in the app live here
+
+@docs elm
+
+-}
+
 import Html
 import Svg
 import Svg.Attributes as SvgAttr
 
 
+{-| The Elm logo
+-}
 elm : Html.Html msg_
 elm =
     Svg.svg
