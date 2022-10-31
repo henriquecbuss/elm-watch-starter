@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "outDir": "public/build",
-    "rootDir": "src",
     "lib": ["dom"]
   },
   "extends": "./tsconfig.base.json",
