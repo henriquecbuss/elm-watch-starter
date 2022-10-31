@@ -18,6 +18,7 @@ import Html
 import InteropDefinitions
 import InteropPorts
 import Json.Decode as Decode
+import Pages.CustomElements
 import Pages.Home_
 import Request
 import Shared
@@ -228,6 +229,10 @@ toElmSubscription page toElm =
     case page of
         Gen.Model.Redirecting_ ->
             Nothing
+
+        Gen.Model.CustomElements _ _ ->
+            Pages.CustomElements.toElmSubscription toElm
+                |> Maybe.map Gen.Msg.CustomElements
 
         Gen.Model.Home_ _ _ ->
             Pages.Home_.toElmSubscription toElm

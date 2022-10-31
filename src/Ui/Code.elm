@@ -25,9 +25,7 @@ viewBlock attributes lines =
         (List.map
             (\line ->
                 Html.div []
-                    [ Html.span [ class "font-bold" ] [ Html.text "$ " ]
-                    , Html.text line
-                    ]
+                    [ Html.text line ]
             )
             lines
         )

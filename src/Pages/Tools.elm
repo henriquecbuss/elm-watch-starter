@@ -73,6 +73,15 @@ view shared =
                             , name = "elm-ts-interop"
                             }
                         , toolListItem
+                            { description =
+                                [ Html.text "Custom elements complement Elm really nicely. Check out the "
+                                , Ui.Link.view Gen.Route.CustomElements [] [ Html.text "Custom elements" ]
+                                , Html.text " page to learn more about them and how they're used in this project."
+                                ]
+                            , link = "https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements"
+                            , name = "custom elements"
+                            }
+                        , toolListItem
                             { description = [ Html.text "To help us install other elm tools." ]
                             , link = "https://elm-tooling.github.io/elm-tooling-cli/"
                             , name = "elm-tooling"

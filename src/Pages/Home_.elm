@@ -21,7 +21,6 @@ import InteropDefinitions
 import Page
 import Request
 import Shared
-import Ui.AutoAnimate
 import Ui.Code
 import Ui.Header
 import Ui.Link
@@ -32,9 +31,7 @@ import View exposing (View)
 {-| The model for this page
 -}
 type alias Model =
-    { items : List Int
-    , maxId : Int
-    }
+    {}
 
 
 {-| Everything this page can do
@@ -42,8 +39,6 @@ type alias Model =
 type Msg
     = ClickedDecrement
     | ClickedIncrement
-    | ClickedAdd
-    | ClickedRemove Int
 
 
 {-| This is how elm-spa knows what to do with our app
@@ -64,7 +59,7 @@ page shared _ =
 
 init : ( Model, Effect Msg )
 init =
-    ( { items = [], maxId = 0 }, Effect.none )
+    ( {}, Effect.none )
 
 
 
@@ -80,45 +75,18 @@ update msg model =
         ClickedIncrement ->
             ( model, Effect.fromShared Shared.increment )
 
-        ClickedAdd ->
-            ( { model
-                | items = model.items ++ [ model.maxId ]
-                , maxId = model.maxId + 1
-              }
-            , Effect.none
-            )
-
-        ClickedRemove id ->
-            ( { model | items = List.filter (\item -> item /= id) model.items }
-            , Effect.none
-            )
-
 
 
 -- VIEW
 
 
 view : Shared.Model -> Model -> View Msg
-view shared model =
+view shared _ =
     { title = "elm-watch starter"
     , body =
         [ Ui.Header.view
         , Html.main_ [ class "container mx-auto px-4 pb-40" ]
-            [ Html.p [] [ Html.text "++++++++++++++++++++++++++++++++++++++++++++++" ]
-            , Html.button [ Html.Events.onClick ClickedAdd ] [ Html.text "Add" ]
-            , Ui.AutoAnimate.viewKeyed
-                [ class "flex flex-col" ]
-                (List.map
-                    (\item ->
-                        ( String.fromInt item
-                        , Html.button [ Html.Events.onClick (ClickedRemove item) ]
-                            [ Html.text (String.fromInt item) ]
-                        )
-                    )
-                    model.items
-                )
-            , Html.p [] [ Html.text "++++++++++++++++++++++++++++++++++++++++++++++" ]
-            , viewFirstSection shared
+            [ viewFirstSection shared
             , viewGettingStarted
             ]
         ]
