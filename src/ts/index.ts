@@ -1,4 +1,7 @@
+import { defineCustomElements } from "../../generated/customElements";
+
 const run = () => {
+  defineCustomElements();
   const counter = localStorage.getItem("counter");
 
   const app = window.Elm.Main.init({

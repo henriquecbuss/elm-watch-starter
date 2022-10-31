@@ -10,13 +10,14 @@
     "build:esbuild": "esbuild src/ts/index.ts --bundle --outdir=public/build --public-path=/build/",
     "build:tailwind": "tailwindcss -i ./src/css/index.css -o ./public/build/index.css",
     "dev": "run-pty run-pty.json",
-    "generate": "npm run generate:elm-spa && npm run generate:ts-interop",
+    "generate": "npm run generate:elm-spa && npm run generate:custom-elements && npm run generate:ts-interop",
     "generate:ts-interop": "elm-ts-interop --output generated/Main.d.ts",
     "generate:elm-spa": "elm-spa gen",
+    "generate:custom-elements": "ts-node scripts/generateCustomElements.ts",
     "lint": "npm run lint:elm && npm run lint:ts && npm run lint:css",
     "lint:elm": "elm-format --validate ./src ./tests && elm-review",
     "lint:ts": "tsc --noEmit && eslint . && prettier --check .",
-    "lint:css": "npx stylelint src/**/*.css",
+    "lint:css": "stylelint src/**/*.css",
     "test": "npm run test:elm && npm run test:ts",
     "test:ts": "vitest run",
     "test:elm": "elm-test-rs"
@@ -42,7 +43,11 @@
     "stylelint": "^14.14.0",
     "stylelint-config-standard": "^29.0.0",
     "tailwindcss": "^3.2.1",
+    "ts-node": "^10.9.1",
     "uglify-js": "^3.17.4",
     "vitest": "^0.24.3"
+  },
+  "dependencies": {
+    "@formkit/auto-animate": "^1.0.0-beta.3"
   }
 }

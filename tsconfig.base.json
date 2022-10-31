@@ -2,7 +2,7 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "baseUrl": ".",
-    "module": "esnext",
+    "module": "CommonJS",
     "target": "es2017",
     "lib": ["es6", "dom", "esnext.asynciterable", "es2017"],
     "sourceMap": true,
