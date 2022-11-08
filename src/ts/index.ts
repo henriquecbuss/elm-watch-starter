@@ -11,19 +11,24 @@ const app = window.Elm.Main.init({
 });
 
 app.ports.interopFromElm.subscribe((fromElm) => {
-  pattern.match(fromElm)
+  pattern
+    .match(fromElm)
+
     .with({ tag: "alert" }, ({ data }) => {
       console.warn(data.message);
 
       app.ports.interopToElm.send({ tag: "alerted" });
     })
+
     .with({ tag: "scrollTo" }, ({ data }) => {
       document.querySelector(data.querySelector)?.scrollIntoView({
         behavior: "smooth",
       });
     })
+
     .with({ tag: "storeCounter" }, ({ data }) => {
       localStorage.setItem("counter", data.counter.toString());
     })
+
     .exhaustive();
 });
