@@ -48,6 +48,7 @@
     "vitest": "^0.24.3"
   },
   "dependencies": {
-    "@formkit/auto-animate": "^1.0.0-beta.3"
+    "@formkit/auto-animate": "^1.0.0-beta.3",
+    "ts-pattern": "^4.0.5"
   }
 }
