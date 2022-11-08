@@ -1,4 +1,5 @@
 import { defineCustomElements } from "../../generated/customElements";
+import * as pattern from "ts-pattern";
 
 const run = () => {
   defineCustomElements();
@@ -10,31 +11,23 @@ const run = () => {
     },
   });
 
-  app.ports.interopFromElm.subscribe(({ tag, data }) => {
-    switch (tag) {
-      case "alert": {
+  app.ports.interopFromElm.subscribe((fromElm) => {
+    pattern.match(fromElm)
+      .with({ tag: "alert" }, ({ data }) => {
         console.warn(data.message);
 
         app.ports.interopToElm.send({ tag: "alerted" });
-
-        break;
-      }
-
-      case "storeCounter": {
-        localStorage.setItem("counter", data.counter.toString());
-
-        break;
-      }
-      case "scrollTo": {
+      })
+      .with({ tag: "scrollTo" }, ({ data }) => {
         document.querySelector(data.querySelector)?.scrollIntoView({
           behavior: "smooth",
         });
-        break;
-      }
-    }
+      })
+      .with({ tag: "storeCounter" }, ({ data }) => {
+        localStorage.setItem("counter", data.counter.toString());
+      })
+      .exhaustive();
   });
 };
 
 run();
-
-export {};
